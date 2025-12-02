@@ -28,6 +28,7 @@
     "@prisma/adapter-pg": "^7.0.0",
     "pg": "^8.14.1",
     "dotenv": "catalog:",
-    "zod": "^4.1.11"
+    "zod": "^4.1.11",
+    "@supabase/supabase-js": "^2.86.0"
   }
 }
