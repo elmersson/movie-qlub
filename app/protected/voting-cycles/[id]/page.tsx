@@ -39,7 +39,8 @@ async function VotingCycleDetails({ id }: { id: string }) {
   // Fetch suggestions for this voting cycle
   const { data: suggestions, error: suggestionsError } = await supabase
     .from("suggestion")
-    .select(`
+    .select(
+      `
       id,
       movieTitle,
       movieDetails,
@@ -52,18 +53,16 @@ async function VotingCycleDetails({ id }: { id: string }) {
       plot,
       posterUrl,
       imdbRating,
+      submittedById,
       profiles (username, email)
-    `)
+    `
+    )
     .eq("cycleId", id)
     .order("submittedAt", { ascending: true });
-  
+
   if (suggestionsError) {
     console.error("Error loading suggestions:", suggestionsError);
   }
-
-  // if (suggestionsError) {
-  //   console.error("Error loading suggestions:", suggestionsError);
-  // }
 
   // Determine current phase
   const now = new Date();
@@ -166,32 +165,78 @@ async function VotingCycleDetails({ id }: { id: string }) {
                   <div className="flex justify-between">
                     <div>
                       {suggestion.movieDetails ? (
-                        <Link href={`/protected/movies/${JSON.parse(suggestion.movieDetails).id}`}>
+                        <Link
+                          href={`/protected/movies/${
+                            JSON.parse(suggestion.movieDetails).id
+                          }`}
+                        >
                           <h3 className="font-bold text-lg text-blue-600 hover:text-blue-800 hover:underline">
                             {suggestion.movieTitle}
                           </h3>
                         </Link>
                       ) : (
-                        <h3 className="font-bold text-lg">{suggestion.movieTitle}</h3>
+                        <h3 className="font-bold text-lg">
+                          {suggestion.movieTitle}
+                        </h3>
                       )}
                       <p className="text-sm text-gray-500">
-                        Suggested by: {suggestion.profiles?.email || suggestion.profiles?.username || 'Unknown User'}
+                        Suggested by:{" "}
+                        {suggestion.profiles?.email ||
+                          suggestion.profiles?.username ||
+                          "Unknown User"}
                       </p>
                       {suggestion.year && (
-                        <p className="text-sm text-gray-500">Year: {suggestion.year}</p>
+                        <p className="text-sm text-gray-500">
+                          Year: {suggestion.year}
+                        </p>
                       )}
                       {suggestion.genre && (
-                        <p className="text-sm text-gray-500">Genre: {suggestion.genre}</p>
+                        <p className="text-sm text-gray-500">
+                          Genre: {suggestion.genre}
+                        </p>
                       )}
                     </div>
-                    <div>
+                    <div className="flex flex-col items-end">
                       <p className="text-sm text-gray-500">
                         {new Date(suggestion.submittedAt).toLocaleDateString()}
                       </p>
+                      {suggestion.submittedById === user.id &&
+                        currentPhase === "Suggestion Phase" && (
+                          <form
+                            action={async () => {
+                              "use server";
+                              const supabase = await createClient();
+                              const {
+                                data: { user: currentUser },
+                              } = await supabase.auth.getUser();
+                              if (
+                                !currentUser ||
+                                currentUser.id !== suggestion.submittedById
+                              ) {
+                                return;
+                              }
+                              await supabase
+                                .from("suggestion")
+                                .delete()
+                                .eq("id", suggestion.id)
+                                .eq("submittedById", currentUser.id);
+                              redirect(`/protected/voting-cycles/${id}`);
+                            }}
+                          >
+                            <button
+                              type="submit"
+                              className="mt-2 text-red-500 hover:text-red-700 text-sm"
+                            >
+                              Remove
+                            </button>
+                          </form>
+                        )}
                     </div>
                   </div>
                   {suggestion.plot && (
-                    <p className="mt-2 text-sm text-gray-600 line-clamp-2">{suggestion.plot}</p>
+                    <p className="mt-2 text-sm text-gray-600 line-clamp-2">
+                      {suggestion.plot}
+                    </p>
                   )}
                 </div>
               ))}
