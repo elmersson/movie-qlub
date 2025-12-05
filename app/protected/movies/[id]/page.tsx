@@ -1,6 +1,7 @@
 import GenreTagLink from "@/components/genre-tag-link";
 import MovieCard from "@/components/movie-card"; // Used for similar movies
 import Link from "next/link";
+import { SuggestMovieButton } from "@/components/suggest-movie-button";
 import {
   ArrowLeft,
   Image as ImageIcon,
@@ -179,15 +180,18 @@ export default async function MovieDetailPage({ params }: MoviePageProps) {
         </div>
       )}
 
-      {/* Content Area */}
-      <div className="container mx-auto max-w-5xl -mt-40 p-8">
-        <Link
-          href="/"
-          className="flex items-center text-white hover:text-blue-200 mb-6"
-        >
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          Back to Popular Movies
-        </Link>
+{/* Content Area */}
+        <div className="container mx-auto max-w-5xl -mt-40 p-8">
+          <div className="flex items-center gap-4 mb-6">
+            <Link
+              href="/"
+              className="flex items-center text-white hover:text-blue-200"
+            >
+              <ArrowLeft className="w-5 h-5 mr-2" />
+              Back to Popular Movies
+            </Link>
+            <SuggestMovieButton movie={movie} />
+          </div>
         <div className="flex flex-col md:flex-row gap-8 bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-6">
           {/* Poster: Uses max-w-xs on mobile and flex-shrink on desktop for responsiveness */}
           {movie.poster_path && (
