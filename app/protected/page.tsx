@@ -1,6 +1,7 @@
 // /app/(protected)/page.tsx (Full updated file)
 
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { InfoIcon } from "lucide-react";
 import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
@@ -83,16 +84,34 @@ export default function ProtectedPage() {
       </div>
 
       <div className="flex flex-col gap-2 items-start">
+        <h2 className="font-bold text-2xl mb-4">Voting Cycles</h2>
+        <p className="mb-4">Manage voting cycles for movie selections.</p>
+        <Link
+          href="/protected/voting-cycles"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md"
+        >
+          Manage Voting Cycles
+        </Link>
+      </div>
+
+      <div className="flex flex-col gap-2 items-start">
+        <h2 className="font-bold text-2xl mb-4">Movies</h2>
+        <p className="mb-4">See popular movies</p>
+        <Link
+          href="/protected/movies/popular"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md"
+        >
+          Popular movies
+        </Link>
+      </div>
+
+      <div className="flex flex-col gap-2 items-start">
         <h2 className="font-bold text-2xl mb-4">Your full user details</h2>
         <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
           <Suspense>
             <UserDetails />
           </Suspense>
         </pre>
-      </div>
-      <div>
-        <h2 className="font-bold text-2xl mb-4">Next steps</h2>
-        <FetchDataSteps />
       </div>
     </div>
   );
