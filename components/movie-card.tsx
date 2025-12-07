@@ -19,7 +19,7 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   // The Link component wraps the entire card and points to the dynamic route
-  const href = `/movies/${movie.id}`;
+  const href = `/protected/movies/${movie.id}`;
 
   return (
     <Link href={href}>
