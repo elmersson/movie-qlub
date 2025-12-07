@@ -3,27 +3,34 @@
 
 import Link from "next/link";
 import React from "react";
+import { Chip } from "./ui/chip";
+import { TypographyExtraSmall } from "./ui/typography";
+import { cn } from "@/lib/utils";
 
-interface GenreTagLinkProps {
-  genreId: number;
-  genreName: string;
+interface TagLinkProps extends React.HTMLAttributes<HTMLDivElement> {
+  name: string;
+  href: string;
 }
 
-const GenreTagLink: React.FC<GenreTagLinkProps> = ({ genreId, genreName }) => {
-  // Construct the navigation URL based on the required path
-  const href = `/protected/movies/genre/${genreId}`;
-
+const TagLink: React.FC<TagLinkProps> = ({
+  name,
+  href,
+  className,
+  ...props
+}) => {
   return (
     <Link href={href} passHref>
-      <span
-        key={genreId}
-        className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3 py-1 rounded-full 
-                   cursor-pointer transition duration-150 ease-in-out"
+      <Chip
+        className={cn(
+          "rounded-full py-1 px-2 hover:bg-neutral-800/80 hover:border-primary-700/30 transition duration-300",
+          className
+        )}
+        {...props}
       >
-        {genreName}
-      </span>
+        <TypographyExtraSmall>{name}</TypographyExtraSmall>
+      </Chip>
     </Link>
   );
 };
 
-export default GenreTagLink;
+export default TagLink;

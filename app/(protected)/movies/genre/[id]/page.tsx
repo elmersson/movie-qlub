@@ -28,10 +28,10 @@ interface GenrePageProps {
 async function getMoviesByGenre(
   genreId: string
 ): Promise<{ movies: Movie[]; genreName: string }> {
-  const TMDB_API_KEY = process.env.TMDB_API_KEY;
+  const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
   if (!TMDB_API_KEY) {
-    throw new Error("Configuration Error: TMDB_API_KEY is missing.");
+    throw new Error("Configuration Error: NEXT_PUBLIC_TMDB_API_KEY is missing.");
   }
 
   // 1. Fetch Movies by Genre ID (using the /discover endpoint)

@@ -21,9 +21,39 @@ export default {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
+        // primary: {
+        //   DEFAULT: "hsl(var(--primary))",
+        //   foreground: "hsl(var(--primary-foreground))",
+        // },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          100: "#F7FFF8",
+          150: "#F2FFF3",
+          200: "#E6FFE8",
+          300: "#D5FFD6",
+          400: "#C0E7C1",
+          500: "#8FD5A3",
+          600: "#5EC89B",
+          700: "#29BE88",
+          800: "#008E63",
+          900: "#005A4A",
+          1000: "#002d30",
+          DEFAULT: "#29BE88", // optional: maps `bg-primary` to 700
+        },
+        text: {
+          primary: "#C3C3C3",
+          secondary: "#797979",
+        },
+        bg: {
+          primary: "#0E0E0E",
+          secondary: "#1A1A1A",
+          nav: "#080808",
+        },
+        lightTransparent: {
+          15: "#A3A3A326", // 15% opacity
+          5: "#A3A3A30D",  // 5% opacity
+        },
+        transparent: {
+          60: "#A3A3A399", // 60% opacity
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

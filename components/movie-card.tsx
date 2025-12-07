@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import React from "react";
+import Image from "next/image";
 
 type Movie = {
   id: number;
@@ -18,7 +19,7 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   // The Link component wraps the entire card and points to the dynamic route
-  const href = `/protected/movies/${movie.id}`;
+  const href = `/movies/${movie.id}`;
 
   return (
     <Link href={href}>
@@ -29,11 +30,15 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
                    cursor-pointer transform transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl"
       >
         {/* Poster Image */}
-        <img
-          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-          alt={movie.title}
-          className="w-full h-80 object-cover"
-        />
+        <div className="w-full h-80">
+          <Image
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            alt={movie.title}
+            width={500}
+            height={750}
+            className="w-full h-full object-cover"
+          />
+        </div>
 
         {/* Details */}
         <div className="p-4">

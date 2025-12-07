@@ -13,11 +13,11 @@ type Movie = {
 // Data fetching function - runs securely on the server
 async function getPopularMovies(): Promise<Movie[]> {
   // ⭐️ 1. Get API Key from environment variable ⭐️
-  const TMDB_API_KEY = process.env.TMDB_API_KEY;
+  const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
   if (!TMDB_API_KEY) {
     throw new Error(
-      "Configuration Error: TMDB_API_KEY is not set in .env.local"
+      "Configuration Error: NEXT_PUBLIC_TMDB_API_KEY is not set in .env.local"
     );
   }
 
