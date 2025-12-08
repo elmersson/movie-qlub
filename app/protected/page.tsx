@@ -4,22 +4,8 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { InfoIcon } from "lucide-react";
-import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 import { Suspense } from "react";
 import { UpdateRoleButton } from "@/components/update-role-button";
-
-// Define an interface for the expected structure of the claims for clarity
-interface SupabaseClaims {
-  sub: string;
-  aud: string;
-  email: string;
-  user_metadata: {
-    role?: string; // Expect the custom role here
-    [key: string]: any;
-  };
-  role: string; // The default Supabase role (e.g., 'authenticated')
-  [key: string]: any;
-}
 
 // --- Component to fetch and display the user's role ---
 async function UserRoleDisplay() {
@@ -31,7 +17,7 @@ async function UserRoleDisplay() {
     return <span className="text-red-500">Not authenticated</span>;
   }
 
-  const claims = data.claims as SupabaseClaims;
+  const claims = data.claims;
   // Prioritize custom role in user_metadata, fall back to default 'role' claim
   const userRole = claims.user_metadata?.role || claims.role;
 
@@ -56,7 +42,7 @@ async function UserDetails() {
     redirect("/auth/login");
   }
 
-  const claims = data.claims as SupabaseClaims;
+  const claims = data.claims;
 
   // Returning JSON string
   return JSON.stringify(claims, null, 2);
