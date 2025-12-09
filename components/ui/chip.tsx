@@ -10,7 +10,7 @@ function Chip({ children, className, ...props }: RatingChipContainerProps) {
   return (
     <div
       className={cn(
-        "flex justify-center items-center flex-grow-0 flex-shrink-0 gap-2.5 px-[18px] py-2 rounded-lg bg-neutral-200/80 border-neutral-700/500 dark:bg-neutral-800/50 backdrop-blur-sm border-t dark:border-neutral-700/50",
+        "flex justify-center items-center flex-grow-0 flex-shrink-0 gap-2.5 px-[18px] py-2 rounded-lg bg-white/80 border-neutral-950/10 dark:bg-neutral-800/80 backdrop-blur-sm border-t dark:border-neutral-700/90",
         className
       )}
       {...props}

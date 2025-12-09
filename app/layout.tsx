@@ -28,7 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${roboto.className} antialiased`}>
+      <body
+        className={`${roboto.className} antialiased bg-neutral-100 dark:bg-neutral-950`}
+      >
         <QueryProvider>
           <ThemeProvider
             attribute="class"

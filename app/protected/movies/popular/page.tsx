@@ -1,6 +1,4 @@
-// app/page.tsx (Server Component)
-
-import MovieCard from "@/components/movie-card";
+import { MovieCardVertical } from "@/components/movies/movie-card";
 
 type Movie = {
   id: number;
@@ -67,9 +65,18 @@ export default async function HomePage() {
   return (
     <main className="p-8">
       <h1 className="text-3xl font-bold mb-6">Popular Movies</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 xl:grid-cols-5 2xl:grid-cols-6">
         {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
+          // <MovieCard key={movie.id} movie={movie} />
+          <div key={movie.id}>
+            <MovieCardVertical
+              id={movie.id}
+              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              title={movie.title}
+              vote_average={movie.vote_average}
+              vote_count={movie.vote_count}
+            />
+          </div>
         ))}
       </div>
     </main>

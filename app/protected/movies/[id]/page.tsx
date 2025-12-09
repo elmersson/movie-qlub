@@ -145,16 +145,21 @@ export default function MovieDetailPage({ params }: MoviePageProps) {
   return (
     <main className="min-h-screen">
       {/* Backdrop Image - Fixed height but background covers and centers */}
-      {/* {movie.backdrop_path && (
-        <div
-          className="relative h-96 bg-cover bg-center bg-no-repeat -z-50"
-          style={{
-            backgroundImage: `url(${IMAGE_BASE_URL}${movie.backdrop_path})`,
-          }}
-        >
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-2xl"></div>
+      {movie.backdrop_path && (
+        <div className="absolute top-0 left-0 w-full h-full -z-50 ">
+          {/* Backdrop image */}
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40" // Removed the non-standard mask classes
+            style={{
+              backgroundImage: `url(${IMAGE_BASE_URL}${movie.backdrop_path})`,
+            }}
+          />
+
+          <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/30 dark:from-black/60 dark:via-black/30 to-transparent backdrop-blur-3xl"></div>
+
+          <div className="absolute inset-0 bg-gradient-to-t from-white/100 via-white/0 dark:from-black/100 dark:via-black/0 to-transparent"></div>
         </div>
-      )} */}
+      )}
 
       {/* Content Area */}
       <div className="container mx-auto max-w-5xl p-8">
@@ -441,9 +446,12 @@ export default function MovieDetailPage({ params }: MoviePageProps) {
               {movie.similar.results.slice(0, 8).map((similarMovie) => (
                 <div key={similarMovie.id}>
                   <MovieCardVertical
+                    id={similarMovie.id}
                     src={`https://image.tmdb.org/t/p/w500${similarMovie.poster_path}`}
                     title={similarMovie.title}
                     vote_average={similarMovie.vote_average}
+                    vote_count={similarMovie.vote_count}
+                    onPlusClick={() => console.log("added movie")}
                   />
                 </div>
               ))}
