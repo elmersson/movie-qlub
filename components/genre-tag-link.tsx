@@ -22,7 +22,7 @@ const TagLink: React.FC<TagLinkProps> = ({
     <Link href={href} passHref>
       <Chip
         className={cn(
-          "rounded-full py-1 px-2 hover:bg-neutral-800/80 hover:border-primary-700/30 transition duration-300",
+          "rounded-full py-1 px-2 hover:border-primary-700 dark:hover:border-primary-700/70 transition duration-300",
           className
         )}
         {...props}

@@ -125,6 +125,9 @@ export interface TmdbMovieVideos {
   }>;
 }
 
+export type TmdbVideoResult = TmdbMovieVideos["results"][number];
+
+
 export interface TmdbMovieWatchProviders {
   [countryCode: string]: {
     link: string;

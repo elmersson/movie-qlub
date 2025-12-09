@@ -13,7 +13,7 @@ export function TypographyH1({
   return (
     <h1
       className={cn(
-        "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-text-primary",
+        "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-text-secondary dark:text-text-primary",
         className
       )}
       {...props}
@@ -31,7 +31,7 @@ export function TypographyH2({
   return (
     <h2
       className={cn(
-        "scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 text-text-primary border-none",
+        "scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 text-text-secondary dark:text-text-primary border-none",
         className
       )}
       {...props}
@@ -49,7 +49,7 @@ export function TypographyH3({
   return (
     <h3
       className={cn(
-        "scroll-m-20 text-2xl font-semibold tracking-tight text-text-primary",
+        "scroll-m-20 text-2xl font-semibold tracking-tight text-text-secondary dark:text-text-primary",
         className
       )}
       {...props}
@@ -67,7 +67,7 @@ export function TypographyH4({
   return (
     <h4
       className={cn(
-        "scroll-m-20 text-xl font-semibold tracking-tight text-text-primary",
+        "scroll-m-20 text-xl font-semibold tracking-tight text-text-secondary dark:text-text-primary",
         className
       )}
       {...props}
@@ -85,7 +85,7 @@ export function TypographyP({
   return (
     <p
       className={cn(
-        "leading-7 [&:not(:first-child)]:mt-6 text-text-primary",
+        "leading-7 text-text-secondary dark:text-text-primary",
         className
       )}
       {...props}
@@ -102,7 +102,10 @@ export function TypographyBlockquote({
 }: TypographyProps) {
   return (
     <blockquote
-      className={cn("mt-6 border-l-2 pl-6 italic text-text-primary", className)}
+      className={cn(
+        "mt-6 border-l-2 pl-6 italic text-text-secondary dark:text-text-primary",
+        className
+      )}
       {...props}
     >
       {children}
@@ -116,7 +119,7 @@ export function TypographyTable({
   ...props
 }: TypographyProps) {
   return (
-    <div className="my-6 w-full overflow-y-auto text-text-primary">
+    <div className="my-6 w-full overflow-y-auto text-text-secondary dark:text-text-primary">
       <table className={cn("w-full", className)} {...props}>
         {children}
       </table>
@@ -132,7 +135,7 @@ export function TypographyList({
   return (
     <ul
       className={cn(
-        "my-6 ml-6 list-disc [&>li]:mt-2 text-text-primary",
+        "my-6 ml-6 list-disc [&>li]:mt-2 text-text-secondary dark:text-text-primary",
         className
       )}
       {...props}
@@ -150,7 +153,7 @@ export function TypographyInlineCode({
   return (
     <code
       className={cn(
-        "bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-text-primary",
+        "bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-text-secondary dark:text-text-primary",
         className
       )}
       {...props}
@@ -168,7 +171,7 @@ export function TypographyLead({
   return (
     <p
       className={cn(
-        "text-muted-foreground text-xl text-text-primary",
+        "text-muted-foreground text-xl text-text-secondary dark:text-text-primary",
         className
       )}
       {...props}
@@ -185,7 +188,10 @@ export function TypographyLarge({
 }: TypographyProps) {
   return (
     <div
-      className={cn("text-lg font-semibold text-text-primary", className)}
+      className={cn(
+        "text-lg font-semibold text-text-secondary dark:text-text-primary",
+        className
+      )}
       {...props}
     >
       {children}
@@ -201,7 +207,7 @@ export function TypographySmall({
   return (
     <small
       className={cn(
-        "text-sm font-medium leading-none text-text-primary",
+        "text-sm font-medium leading-none text-text-secondary dark:text-text-primary",
         className
       )}
       {...props}
@@ -219,7 +225,7 @@ export function TypographyExtraSmall({
   return (
     <small
       className={cn(
-        "text-xs font-medium leading-none text-text-primary",
+        "text-xs font-medium leading-none text-text-secondary dark:text-text-primary",
         className
       )}
       {...props}

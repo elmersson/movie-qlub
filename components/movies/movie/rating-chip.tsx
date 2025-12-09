@@ -27,7 +27,7 @@ export function RatingChip({ vote_average, vote_count }: RatingChipProps) {
         <div className="flex items-baseline gap-1">
           <TypographyLarge>{vote_average.toFixed(1)}</TypographyLarge>
           <TypographyLarge className="text-transparent-60">
-            /10 ({vote_count}) K
+            /10 ({vote_count})
           </TypographyLarge>
         </div>
       </div>
