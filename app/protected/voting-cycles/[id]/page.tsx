@@ -160,7 +160,7 @@ async function VotingCycleDetails({ id }: { id: string }) {
             <p className="text-gray-500">No suggestions yet.</p>
           ) : (
             <div className="grid gap-3">
-              {suggestions.map((suggestion: any) => (
+              {suggestions.map((suggestion) => (
                 <div key={suggestion.id} className="border rounded-md p-4">
                   <div className="flex justify-between">
                     <div>
@@ -181,8 +181,8 @@ async function VotingCycleDetails({ id }: { id: string }) {
                       )}
                       <p className="text-sm text-gray-500">
                         Suggested by:{" "}
-                        {suggestion.profiles?.email ||
-                          suggestion.profiles?.username ||
+                        {suggestion.profiles.email ||
+                          suggestion.profiles.username ||
                           "Unknown User"}
                       </p>
                       {suggestion.year && (

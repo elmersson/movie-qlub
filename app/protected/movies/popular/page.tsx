@@ -1,4 +1,4 @@
-import { MovieCardVertical } from "@/components/movies/movie-card";
+import { MovieCardVertical } from "@/components/movies/movie-card-vertical";
 
 type Movie = {
   id: number;

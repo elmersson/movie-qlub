@@ -3,7 +3,7 @@
 import TagLink from "@/components/genre-tag-link";
 import Link from "next/link";
 import { SuggestMovieButton } from "@/components/suggest-movie-button";
-import { ArrowLeft, Globe, Video } from "lucide-react";
+import { ArrowLeft, Globe } from "lucide-react";
 import { useMovieDetails } from "@/lib/queries";
 import { Loader2 } from "lucide-react";
 import { use, useState } from "react";
@@ -27,8 +27,10 @@ import {
 } from "@/components/ui/dialog";
 import { Storyline } from "@/components/movies/movie/storyline";
 import { TmdbMovieReleaseDates } from "@/types/tmdb";
-import { MovieCardVertical } from "@/components/movies/movie-card";
+import { MovieCardVertical } from "@/components/movies/movie-card-vertical";
 import { YouTubePlayer } from "@/components/ui/youtube-video-player";
+import MovieCardHorizontal from "@/components/movies/movie-card-horizontal";
+import { ImageZoom } from "@/components/kibo-ui/image-zoom";
 
 // --- TYPE DEFINITIONS ---
 type CastMember = {
@@ -155,7 +157,7 @@ export default function MovieDetailPage({ params }: MoviePageProps) {
             }}
           />
 
-          <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/30 dark:from-black/60 dark:via-black/30 to-transparent backdrop-blur-3xl"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/30 dark:from-/60 dark:via-black/30 to-transparent backdrop-blur-3xl"></div>
 
           <div className="absolute inset-0 bg-gradient-to-t from-white/100 via-white/0 dark:from-black/100 dark:via-black/0 to-transparent"></div>
         </div>
@@ -188,13 +190,15 @@ export default function MovieDetailPage({ params }: MoviePageProps) {
         <div className="flex flex-row gap-6">
           <div className="w-1/3">
             {movie.poster_path && (
-              <Image
-                src={`${POSTER_BASE_URL}${movie.poster_path}`}
-                alt={movie.title}
-                width={500}
-                height={750}
-                className="w-full aspect-[2/3] object-cover"
-              />
+              <ImageZoom>
+                <Image
+                  src={`${POSTER_BASE_URL}${movie.poster_path}`}
+                  alt={movie.title}
+                  width={500}
+                  height={750}
+                  className="w-full aspect-[2/3] object-cover"
+                />
+              </ImageZoom>
             )}
           </div>
           <div className="w-2/3">
