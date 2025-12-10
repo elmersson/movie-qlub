@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { TypographyExtraSmall } from "./typography";
 
 interface YouTubePlayerProps {
   videoId: string;
@@ -159,14 +160,13 @@ export function YouTubePlayer({
 
                 <motion.div
                   layoutId={`youtube-player-content-overlay-${videoId}`}
-                  className="absolute inset-0 flex flex-col items-center justify-center z-10"
+                  className="absolute inset-0 flex flex-col justify-end z-10 p-2"
                 >
                   <Button
                     size="lg"
                     variant="secondary"
                     className={cn(
-                      "relative h-16 w-16 rounded-full border border-border/20 bg-background/80 backdrop-blur-sm md:h-20 md:w-20 p-0",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                      "relative backdrop-blur-sm bg-lightTransparent-15 flex-row",
                       playButtonClassName
                     )}
                     onClick={handlePlay}
@@ -174,10 +174,11 @@ export function YouTubePlayer({
                   >
                     <Play
                       className={cn(
-                        "h-6 w-6 translate-x-[2px] fill-primary text-primary md:h-8 md:w-8",
+                        "h-5 w-5 translate-x-[2px] fill-text-primary text-text-primary md:h-6 md:w-6",
                         playIconClassName
                       )}
                     />
+                    <TypographyExtraSmall>Trailer</TypographyExtraSmall>
                   </Button>
 
                   {title && (
@@ -291,7 +292,7 @@ export function YouTubePlayer({
                         >
                           <Play
                             className={cn(
-                              "h-6 w-6 translate-x-[2px] fill-primary text-primary md:h-8 md:w-8",
+                              "h-6 w-6 translate-x-[2px] fill-text-primary text-text-primary md:h-8 md:w-8",
                               playIconClassName
                             )}
                           />
