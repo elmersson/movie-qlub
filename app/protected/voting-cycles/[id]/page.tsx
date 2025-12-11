@@ -1,9 +1,8 @@
-// /app/protected/voting-cycles/[id]/page.tsx
-
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Suspense } from "react";
 import Link from "next/link";
+import MovieCardHorizontal from "@/components/movies/movie-card-horizontal";
 
 async function VotingCycleDetails({ id }: { id: string }) {
   const supabase = await createClient();
@@ -80,7 +79,7 @@ async function VotingCycleDetails({ id }: { id: string }) {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full max-w-5xl">
       <div className="mb-6">
         <Link
           href="/protected/voting-cycles"
@@ -160,86 +159,57 @@ async function VotingCycleDetails({ id }: { id: string }) {
             <p className="text-gray-500">No suggestions yet.</p>
           ) : (
             <div className="grid gap-3">
-              {suggestions.map((suggestion) => (
-                <div key={suggestion.id} className="border rounded-md p-4">
-                  <div className="flex justify-between">
-                    <div>
-                      {suggestion.movieDetails ? (
-                        <Link
-                          href={`/protected/movies/${
-                            JSON.parse(suggestion.movieDetails).id
-                          }`}
-                        >
-                          <h3 className="font-bold text-lg text-blue-600 hover:text-blue-800 hover:underline">
-                            {suggestion.movieTitle}
-                          </h3>
-                        </Link>
-                      ) : (
-                        <h3 className="font-bold text-lg">
-                          {suggestion.movieTitle}
-                        </h3>
-                      )}
-                      <p className="text-sm text-gray-500">
-                        Suggested by:{" "}
-                        {suggestion.profiles.email ||
-                          suggestion.profiles.username ||
-                          "Unknown User"}
-                      </p>
-                      {suggestion.year && (
-                        <p className="text-sm text-gray-500">
-                          Year: {suggestion.year}
-                        </p>
-                      )}
-                      {suggestion.genre && (
-                        <p className="text-sm text-gray-500">
-                          Genre: {suggestion.genre}
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex flex-col items-end">
-                      <p className="text-sm text-gray-500">
-                        {new Date(suggestion.submittedAt).toLocaleDateString()}
-                      </p>
-                      {suggestion.submittedById === user.id &&
-                        currentPhase === "Suggestion Phase" && (
-                          <form
-                            action={async () => {
-                              "use server";
-                              const supabase = await createClient();
-                              const {
-                                data: { user: currentUser },
-                              } = await supabase.auth.getUser();
-                              if (
-                                !currentUser ||
-                                currentUser.id !== suggestion.submittedById
-                              ) {
-                                return;
-                              }
-                              await supabase
-                                .from("suggestion")
-                                .delete()
-                                .eq("id", suggestion.id)
-                                .eq("submittedById", currentUser.id);
-                              redirect(`/protected/voting-cycles/${id}`);
-                            }}
-                          >
-                            <button
-                              type="submit"
-                              className="mt-2 text-red-500 hover:text-red-700 text-sm"
-                            >
-                              Remove
-                            </button>
-                          </form>
-                        )}
-                    </div>
-                  </div>
-                  {suggestion.plot && (
-                    <p className="mt-2 text-sm text-gray-600 line-clamp-2">
-                      {suggestion.plot}
-                    </p>
-                  )}
-                </div>
-              ))}
+              {suggestions.map((suggestion, index) => {
+                const parsedMovie = suggestion.movieDetails
+                  ? JSON.parse(suggestion.movieDetails)
+                  : null;
+
+                const movieForCard = parsedMovie
+                  ? {
+                      title: parsedMovie.title,
+                      release_date: parsedMovie.release_date || null,
+                      runtime: parsedMovie.runtime || null,
+                      poster_path:
+                        parsedMovie.poster_path || suggestion.posterUrl || null,
+                      overview: parsedMovie.overview || suggestion.plot || "",
+                      vote_average:
+                        parsedMovie.vote_average ||
+                        (suggestion.imdbRating
+                          ? parseFloat(suggestion.imdbRating)
+                          : 0),
+                      vote_count: parsedMovie.vote_count || 0,
+                      genres:
+                        parsedMovie.genres ||
+                        (suggestion.genre
+                          ? [{ id: 0, name: suggestion.genre }]
+                          : []),
+                      release_dates: parsedMovie.release_dates || undefined,
+                    }
+                  : {
+                      title: suggestion.movieTitle,
+                      release_date: null,
+                      runtime: suggestion.runtime
+                        ? parseInt(suggestion.runtime)
+                        : null,
+                      poster_path: suggestion.posterUrl || null,
+                      overview: suggestion.plot || "",
+                      vote_average: suggestion.imdbRating
+                        ? parseFloat(suggestion.imdbRating)
+                        : 0,
+                      vote_count: 0,
+                      genres: suggestion.genre
+                        ? [{ id: 0, name: suggestion.genre }]
+                        : [],
+                    };
+
+                return (
+                  <MovieCardHorizontal
+                    key={suggestion.id}
+                    movie={movieForCard}
+                    imageBaseUrl="https://image.tmdb.org/t/p/w500"
+                  />
+                );
+              })}
             </div>
           )}
         </div>
@@ -256,7 +226,7 @@ export default async function VotingCyclePage({
   const { id } = await params;
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-12">
+    <div className="flex-1 w-full flex flex-col gap-12 max-w-5xl mx-auto">
       <div className="w-full">
         <h1 className="font-bold text-2xl mb-4">Voting Cycle Details</h1>
         <p className="text-foreground">
