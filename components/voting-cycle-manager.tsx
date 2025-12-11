@@ -1,5 +1,3 @@
-// /components/voting-cycle-manager.tsx
-
 "use client";
 
 import { useState } from "react";
@@ -16,8 +14,13 @@ type VotingCycle = {
   winnerId: string | null;
 };
 
-export function VotingCycleManager({ initialCycles }: { initialCycles: VotingCycle[] }) {
-  const [votingCycles, setVotingCycles] = useState<VotingCycle[]>(initialCycles);
+export function VotingCycleManager({
+  initialCycles,
+}: {
+  initialCycles: VotingCycle[];
+}) {
+  const [votingCycles, setVotingCycles] =
+    useState<VotingCycle[]>(initialCycles);
   const [isCreating, setIsCreating] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<Partial<VotingCycle>>({
@@ -30,14 +33,12 @@ export function VotingCycleManager({ initialCycles }: { initialCycles: VotingCyc
   const supabase = createClient();
 
   const handleCreate = async () => {
-    const { error } = await supabase
-      .from("VotingCycle")
-      .insert({
-        name: formData.name,
-        suggestionStart: formData.suggestionStart,
-        votingStart: formData.votingStart,
-        votingEnd: formData.votingEnd,
-      });
+    const { error } = await supabase.from("VotingCycle").insert({
+      name: formData.name,
+      suggestionStart: formData.suggestionStart,
+      votingStart: formData.votingStart,
+      votingEnd: formData.votingEnd,
+    });
 
     if (error) {
       console.error("Error creating voting cycle:", error);
@@ -85,13 +86,12 @@ export function VotingCycleManager({ initialCycles }: { initialCycles: VotingCyc
   };
 
   const handleDelete = async (id: string) => {
-    const confirmed = confirm("Are you sure you want to delete this voting cycle?");
+    const confirmed = confirm(
+      "Are you sure you want to delete this voting cycle?"
+    );
     if (!confirmed) return;
 
-    const { error } = await supabase
-      .from("VotingCycle")
-      .delete()
-      .eq("id", id);
+    const { error } = await supabase.from("VotingCycle").delete().eq("id", id);
 
     if (error) {
       console.error("Error deleting voting cycle:", error);
@@ -129,10 +129,10 @@ export function VotingCycleManager({ initialCycles }: { initialCycles: VotingCyc
     // Convert ISO string to datetime-local format (YYYY-MM-DDTHH:mm)
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
@@ -172,7 +172,9 @@ export function VotingCycleManager({ initialCycles }: { initialCycles: VotingCyc
                 type="text"
                 id="name"
                 value={formData.name || ""}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 className="w-full rounded-md border px-3 py-2"
                 placeholder="Monthly Movie Vote"
               />
@@ -180,40 +182,58 @@ export function VotingCycleManager({ initialCycles }: { initialCycles: VotingCyc
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label htmlFor="suggestionStart" className="block text-sm font-medium mb-1">
+                <label
+                  htmlFor="suggestionStart"
+                  className="block text-sm font-medium mb-1"
+                >
                   Suggestion Start
                 </label>
                 <input
                   type="datetime-local"
                   id="suggestionStart"
                   value={formData.suggestionStart || ""}
-                  onChange={(e) => setFormData({ ...formData, suggestionStart: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      suggestionStart: e.target.value,
+                    })
+                  }
                   className="w-full rounded-md border px-3 py-2"
                 />
               </div>
 
               <div>
-                <label htmlFor="votingStart" className="block text-sm font-medium mb-1">
+                <label
+                  htmlFor="votingStart"
+                  className="block text-sm font-medium mb-1"
+                >
                   Voting Start
                 </label>
                 <input
                   type="datetime-local"
                   id="votingStart"
                   value={formData.votingStart || ""}
-                  onChange={(e) => setFormData({ ...formData, votingStart: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, votingStart: e.target.value })
+                  }
                   className="w-full rounded-md border px-3 py-2"
                 />
               </div>
 
               <div>
-                <label htmlFor="votingEnd" className="block text-sm font-medium mb-1">
+                <label
+                  htmlFor="votingEnd"
+                  className="block text-sm font-medium mb-1"
+                >
                   Voting End
                 </label>
                 <input
                   type="datetime-local"
                   id="votingEnd"
                   value={formData.votingEnd || ""}
-                  onChange={(e) => setFormData({ ...formData, votingEnd: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, votingEnd: e.target.value })
+                  }
                   className="w-full rounded-md border px-3 py-2"
                 />
               </div>
@@ -246,24 +266,30 @@ export function VotingCycleManager({ initialCycles }: { initialCycles: VotingCyc
               <div className="flex justify-between items-start">
                 <div>
                   <Link href={`/protected/voting-cycles/${cycle.id}`}>
-                      <h3 className="font-bold text-lg hover:text-blue-500">{cycle.name}</h3>
-                    </Link>
+                    <h3 className="font-bold text-lg hover:text-blue-500">
+                      {cycle.name}
+                    </h3>
+                  </Link>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
                     <div>
-                      <span className="text-sm text-gray-500">Suggestion Period</span>
+                      <span className="text-sm text-gray-500">
+                        Suggestion Period
+                      </span>
                       <p>
                         {new Date(cycle.suggestionStart).toLocaleDateString()} -{" "}
                         {new Date(cycle.votingStart).toLocaleDateString()}
                       </p>
                     </div>
                     <div>
-                      <span className="text-sm text-gray-500">Voting Period</span>
+                      <span className="text-sm text-gray-500">
+                        Voting Period
+                      </span>
                       <p>
                         {new Date(cycle.votingStart).toLocaleDateString()} -{" "}
                         {new Date(cycle.votingEnd).toLocaleDateString()}
                       </p>
                     </div>
-<div>
+                    <div>
                       <span className="text-sm text-gray-500">Status</span>
                       <p>
                         {new Date() < new Date(cycle.suggestionStart)
