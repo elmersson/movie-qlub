@@ -1,10 +1,8 @@
-import { EnvVarWarning } from "@/components/env-var-warning";
 import { AuthButton } from "@/components/auth-button";
 import { Hero } from "@/components/hero";
+import { LoginContent } from "@/components/login-content";
 import { ThemeSwitcher } from "@/components/theme-switcher";
-import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-steps";
-import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
-import { hasEnvVars } from "@/lib/utils";
+
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -15,22 +13,19 @@ export default function Home() {
         <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
           <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
             <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>Next.js Supabase Starter</Link>
+              <Link href={"/"}>Movie Qlub</Link>
             </div>
-            {!hasEnvVars ? (
-              <EnvVarWarning />
-            ) : (
-              <Suspense>
-                <AuthButton />
-              </Suspense>
-            )}
+            <Suspense>
+              <AuthButton />
+            </Suspense>
           </div>
         </nav>
         <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
           <Hero />
           <main className="flex-1 flex flex-col gap-6 px-4">
-            <h2 className="font-medium text-xl mb-4">Next steps</h2>
-            {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
+            <Suspense>
+              <LoginContent />
+            </Suspense>
           </main>
         </div>
 
@@ -43,7 +38,7 @@ export default function Home() {
               className="font-bold hover:underline"
               rel="noreferrer"
             >
-              Supabase
+              Rasmus
             </a>
           </p>
           <ThemeSwitcher />
