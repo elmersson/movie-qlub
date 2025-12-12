@@ -159,7 +159,7 @@ async function VotingCycleDetails({ id }: { id: string }) {
             <p className="text-gray-500">No suggestions yet.</p>
           ) : (
             <div className="grid gap-3">
-              {suggestions.map((suggestion, index) => {
+              {suggestions.map((suggestion) => {
                 const parsedMovie = suggestion.movieDetails
                   ? JSON.parse(suggestion.movieDetails)
                   : null;
