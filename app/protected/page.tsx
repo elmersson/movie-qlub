@@ -8,28 +8,31 @@ import { Suspense } from "react";
 import { UpdateRoleButton } from "@/components/update-role-button";
 
 // --- Component to fetch and display the user's role ---
-async function UserRoleDisplay() {
+async function getUserRole() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
 
   if (error || !data?.claims) {
-    // If authentication fails, the main UserDetails check below will handle the redirect.
-    return <span className="text-red-500">Not authenticated</span>;
+    return { display: "Not authenticated", current: "user" as const };
   }
 
-  const claims = data.claims;
-  // Prioritize custom role in user_metadata, fall back to default 'role' claim
+  const claims = data.claims; // Prioritize custom role in user_metadata, fall back to default 'role' claim
   const userRole = claims.user_metadata?.role || claims.role;
 
-  return (
+  const display = (
     <span
       className={`font-mono font-bold ${
         userRole === "admin" ? "text-green-600" : "text-blue-500"
       }`}
     >
-      {userRole.toUpperCase()}
+            {userRole.toUpperCase()}
     </span>
   );
+
+  return {
+    display,
+    current: (userRole === "admin" ? "admin" : "user") as "user" | "admin",
+  };
 }
 // -----------------------------------------------------
 
@@ -49,7 +52,8 @@ async function UserDetails() {
 }
 // ---------------------------------------------------------
 
-export default function ProtectedPage() {
+export default async function ProtectedPage() {
+  const { display: roleDisplay, current: currentRole } = await getUserRole();
   return (
     <div className="flex-1 w-full max-w-5xl mx-auto flex flex-col gap-12">
       <div className="w-full">
@@ -59,14 +63,14 @@ export default function ProtectedPage() {
           <Suspense
             fallback={<span className="animate-pulse">Loading...</span>}
           >
-            <UserRoleDisplay />
+            {roleDisplay}{" "}
           </Suspense>
         </div>
       </div>
 
       <div className="flex flex-col gap-2 items-start">
         <h2 className="font-bold text-2xl mb-4">Role Management</h2>
-        <UpdateRoleButton />
+        <UpdateRoleButton currentRole={currentRole} />{" "}
       </div>
 
       <div className="flex flex-col gap-2 items-start">
