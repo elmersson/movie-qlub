@@ -75,3 +75,46 @@ export function useMoviesByGenre(genreId: number) {
     enabled: !!genreId,
   })
 }
+
+// Define the simplified result type for the search bar UI
+interface SearchResult {
+    id: number;
+    title: string;
+    release_date: string;
+    poster_path: string | null;
+}
+
+// 🌟 NEW QUERY HOOK FOR MOVIE SEARCH 🌟
+export function useMovieSearch(query: string) {
+    // Only search if the query is at least 3 characters long
+    const isSearchEnabled = query.length >= 3;
+
+    return useQuery<MovieResponse, Error, SearchResult[]>({
+        queryKey: ['movieSearch', query],
+        queryFn: async () => {
+            if (!isSearchEnabled) {
+                // Should be unreachable due to 'enabled' flag, but good practice
+                return { results: [] }; 
+            }
+            // Use the TMDb search endpoint
+            const data = await fetchTMDB(`/search/movie?query=${encodeURIComponent(query)}&include_adult=false`)
+            return data;
+        },
+        // We use a select function to transform the full MovieResponse into the simplified SearchResult[] needed for the Command palette.
+        select: (data: MovieResponse): SearchResult[] => {
+            return data.results
+                .map(movie => ({
+                    id: movie.id,
+                    title: movie.title,
+                    release_date: movie.release_date || '',
+                    poster_path: movie.poster_path,
+                }))
+                .filter(movie => movie.title && movie.release_date) // Basic filtering
+                .slice(0, 10); // Limit results for a cleaner command palette
+        },
+        enabled: isSearchEnabled,
+        // Search results should not be aggressively cached
+        staleTime: 1000 * 60 * 5, // 5 minutes
+        gcTime: 1000 * 60 * 10,  // 10 minutes
+    });
+}
