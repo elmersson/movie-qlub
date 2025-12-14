@@ -227,7 +227,7 @@ export default function MovieDetailPage({ params }: MoviePageProps) {
                     {movie.genres.map((genre: { id: number; name: string }) => (
                       <TagLink
                         key={genre.id}
-                        href={`/movies/genre/${genre.id}`}
+                        href={`/protected/movies/genre/${genre.id}`}
                         name={genre.name}
                       />
                     ))}
@@ -273,32 +273,46 @@ export default function MovieDetailPage({ params }: MoviePageProps) {
             </TypographyH2>
             <div className="flex justify-between border-none">
               {topCast.slice(0, 4).map((cast: CastMember) => (
-                <div
+                // ⭐️ WRAP THE ENTIRE CARD IN A LINK ⭐️
+                <Link
                   key={cast.id}
-                  className="flex flex-col justify-start items-start flex-grow-0 flex-shrink-0 relative gap-3 overflow-hidden border-none"
+                  href={`/protected/movies/person/${cast.id}`}
+                  passHref // Recommended when wrapping custom components/divs
+                  // Use a group class for hover effects on the whole element
+                  className="group"
                 >
-                  <div className="flex-grow-0 flex-shrink-0 w-[181px] h-[181px] relative overflow-hidden rounded-[20px] border-none">
-                    <Image
-                      src={
-                        cast.profile_path
-                          ? `${PROFILE_BASE_URL}${cast.profile_path}`
-                          : "https://placehold.co/128x128/444444/FFFFFF?text=No+Photo"
-                      }
-                      alt={cast.name}
-                      width={181}
-                      height={181}
-                      className="w-full h-full object-cover rounded-[20px] overflow-hidden border-none"
-                    />
+                  <div
+                    // Remove key from here since it's on the Link now
+                    className="flex flex-col justify-start items-start flex-grow-0 flex-shrink-0 relative gap-3 overflow-hidden border-none cursor-pointer"
+                  >
+                    {/* --- Image Container --- */}
+                    <div className="flex-grow-0 flex-shrink-0 w-[181px] h-[181px] relative overflow-hidden rounded-[20px] border-none transition-transform duration-200 group-hover:scale-[1.03]">
+                      <Image
+                        src={
+                          cast.profile_path
+                            ? `${PROFILE_BASE_URL}${cast.profile_path}`
+                            : "https://placehold.co/128x128/444444/FFFFFF?text=No+Photo"
+                        }
+                        alt={cast.name}
+                        width={181}
+                        height={181}
+                        className="w-full h-full object-cover rounded-[20px] overflow-hidden border-none"
+                      />
+                    </div>
+
+                    {/* --- Text Container --- */}
+                    <div className="flex-grow-0 flex-shrink-0 text-base text-left overflow-hidden border-none">
+                      {/* Name */}
+                      <span className="flex-grow-0 flex-shrink-0 text-base text-left text-white block transition-colors duration-200 group-hover:text-yellow-400">
+                        {cast.name}
+                      </span>
+                      {/* Character */}
+                      <span className="flex-grow-0 flex-shrink-0 text-base text-left text-[#797979] block border-none">
+                        {cast.character}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex-grow-0 flex-shrink-0 text-base text-left overflow-hidden border-none">
-                    <span className="flex-grow-0 flex-shrink-0 text-base text-left text-white block">
-                      {cast.name}
-                    </span>
-                    <span className="flex-grow-0 flex-shrink-0 text-base text-left text-[#797979] block border-none">
-                      {cast.character}
-                    </span>
-                  </div>
-                </div>
+                </Link>
               ))}
             </div>
           </section>

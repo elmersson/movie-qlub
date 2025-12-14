@@ -2,7 +2,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import type { TmdbMovieDetailsWithAppendices } from '@/types/tmdb'
+import type { TmdbMovieDetailsWithAppendices, TmdbPersonDetailsWithAppendices } from '@/types/tmdb'
 
 // Define types
 type Movie = TmdbMovieDetailsWithAppendices;
@@ -116,5 +116,40 @@ export function useMovieSearch(query: string) {
         // Search results should not be aggressively cached
         staleTime: 1000 * 60 * 5, // 5 minutes
         gcTime: 1000 * 60 * 10,  // 10 minutes
+    });
+}
+
+export function usePersonDetails(personId: number | string) {
+    
+    const numericPersonId = Number(personId);
+    
+    // 1. Clean up the 'isValidPersonId' calculation to clearly yield a boolean.
+    const isValidPersonId = !isNaN(numericPersonId) && numericPersonId > 0;
+    
+    return useQuery<TmdbPersonDetailsWithAppendices>({ 
+        queryKey: ['person', personId],
+        
+        queryFn: async () => {
+            // 2. Ensure NO early 'return' without throwing an error if 'enabled' is false.
+            // Since we rely on 'enabled', this 'if' block is technically unnecessary but
+            // useful for runtime checks if the dependency structure is complex.
+            if (!isValidPersonId) {
+                // Throwing an error ensures a non-data return path is handled gracefully by TanStack Query
+                throw new Error('Invalid person ID provided'); 
+            }
+            
+            // Note: Since 'isValidPersonId' is checked above, this path WILL be executed 
+            // only when 'enabled' is true.
+            const appendices = "images,movie_credits";
+            
+            // 3. Ensure fetchTMDB is typed or we use 'as' to assert the type.
+            const data = await fetchTMDB(`/person/${personId}?append_to_response=${appendices}`);
+            
+            // Assert that the returned data matches the expected type before returning.
+            return data as TmdbPersonDetailsWithAppendices; 
+        },
+        
+        enabled: isValidPersonId, // 4. 'enabled' is now purely boolean
+        staleTime: 1000 * 60 * 60 * 24, 
     });
 }
