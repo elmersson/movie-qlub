@@ -207,3 +207,103 @@ export interface TmdbMovieDetailsWithAppendices extends TmdbMovieDetails {
   release_dates?: TmdbMovieReleaseDates;
   reviews?: TmdbMovieReviews;
 }
+
+// Assuming this is in your /src/types/tmdb.ts file or similar
+
+/**
+ * Interface for the core TMDb Person Details object.
+ * (Reference: /reference/person-details)
+ */
+export interface TmdbPersonDetails {
+    adult: boolean;
+    also_known_as: string[];
+    biography: string;
+    birthday: string | null; // ISO 8601 date string
+    deathday: string | null;
+    gender: 0 | 1 | 2 | 3; // 1: Female, 2: Male, 0/3: Not specified
+    homepage: string | null;
+    id: number;
+    imdb_id: string | null;
+    known_for_department: string; // e.g., "Acting", "Directing"
+    name: string;
+    place_of_birth: string | null;
+    popularity: number;
+    profile_path: string | null;
+}
+
+/**
+ * Interface for the Person Images appended data.
+ * (Reference: /reference/person-images)
+ */
+export interface TmdbPersonImages {
+    id: number;
+    profiles: Array<{
+        aspect_ratio: number;
+        height: number;
+        iso_639_1: string | null;
+        file_path: string;
+        vote_average: number;
+        vote_count: number;
+        width: number;
+    }>;
+}
+
+/**
+ * Interface for the Person Movie Credits appended data.
+ * (Reference: /reference/person-movie-credits)
+ */
+export interface TmdbPersonMovieCredits {
+    cast: Array<{
+        adult: boolean;
+        backdrop_path: string | null;
+        character: string;
+        credit_id: string;
+        genre_ids: number[];
+        id: number;
+        order: number;
+        original_title: string;
+        overview: string;
+        popularity: number;
+        poster_path: string | null;
+        release_date: string | null;
+        title: string;
+        video: boolean;
+        vote_average: number;
+        vote_count: number;
+    }>;
+    crew: Array<{
+        adult: boolean;
+        backdrop_path: string | null;
+        credit_id: string;
+        department: string;
+        job: string;
+        genre_ids: number[];
+        id: number;
+        original_title: string;
+        overview: string;
+        popularity: number;
+        poster_path: string | null;
+        release_date: string | null;
+        title: string;
+        video: boolean;
+        vote_average: number;
+        vote_count: number;
+    }>;
+    id: number;
+}
+
+
+/**
+ * The final merged type used by the usePersonDetails hook.
+ * Combines core details with the appended data structures.
+ */
+export interface TmdbPersonDetailsWithAppendices extends TmdbPersonDetails {
+    // Appended Data
+    images?: TmdbPersonImages;
+    movie_credits?: TmdbPersonMovieCredits;
+    
+    // TMDb uses this to return errors (e.g., if ID is invalid)
+    success?: boolean; 
+    status_code?: number;
+    status_message?: string;
+}
