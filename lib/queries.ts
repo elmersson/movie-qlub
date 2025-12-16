@@ -153,3 +153,41 @@ export function usePersonDetails(personId: number | string) {
         staleTime: 1000 * 60 * 60 * 24, 
     });
 }
+
+export interface TmdbKeyword {
+    id: number;
+    name: string;
+}
+
+export interface TmdbKeywordResponse {
+    results: TmdbKeyword[];
+    page: number;
+    total_pages: number;
+    total_results: number;
+}
+
+
+// 🌟 NEW QUERY HOOK FOR MOVIES BY KEYWORD 🌟
+export function useMoviesByKeyword(keywordId: number | string) {
+    const numericKeywordId = Number(keywordId);
+    
+    const isValidKeywordId = !isNaN(numericKeywordId) && numericKeywordId > 0;
+    
+    // Uses the standard MovieResponse format
+    return useQuery<MovieResponse>({ 
+        queryKey: ['moviesByKeyword', keywordId],
+        queryFn: async () => {
+            if (!isValidKeywordId) {
+                throw new Error('Invalid keyword ID provided'); 
+            }
+            
+            // Reference: /keyword/{keyword_id}/movies
+            const data = await fetchTMDB(`/keyword/${keywordId}/movies`);
+            
+            // Assert that the returned data matches the expected type
+            return data as MovieResponse; 
+        },
+        enabled: isValidKeywordId,
+        staleTime: 1000 * 60 * 60, // 1 hour
+    });
+}
